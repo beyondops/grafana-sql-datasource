@@ -6,6 +6,7 @@ import './css/query_editor.css!';
 
 export class BeyondOpsSqlQueryCtrl extends QueryCtrl {
   static templateUrl = 'partials/query.editor.html';
+  private lastQueryError = null;
   private defaultQuery = `SELECT
   UNIX_TIMESTAMP(<time_column>) as time_sec,
   <value column> as value,
@@ -35,6 +36,19 @@ ORDER BY <time_column> ASC
       } else {
         this.target.target.rawSql = this.defaultQuery;
       }
+    }
+    this.panelCtrl.events.on('data-received', this.onQueryReceived.bind(this), $scope);
+    this.panelCtrl.events.on('data-error', this.onQueryError.bind(this), $scope);
+  }
+
+  onQueryReceived() {
+    this.lastQueryError = null;
+  }
+
+  onQueryError(err) {
+    console.log(err);
+    if (err.data && err.data.error) {
+      this.lastQueryError = err.data.error;
     }
   }
 

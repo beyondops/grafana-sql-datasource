@@ -17,5 +17,7 @@
       <input type="text" class="gf-form-input" ng-model='ctrl.target.target.target' placeholder="target"></input>
     </div>
   </div>
-
+  <div class="gf-form" ng-show="ctrl.lastQueryError">
+    <pre class="gf-form-pre alert alert-error">{{ctrl.lastQueryError}}</pre>
+  </div>
 </query-editor-row>
