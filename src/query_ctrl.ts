@@ -23,17 +23,17 @@ ORDER BY <time_column> ASC
     super($scope, $injector);
     _.defaultsDeep(this.target, this.defaults);
 
-    this.target.target = this.target.target || 'select metric';
+    this.target.target = this.target.target || { rawSql: null, datasource: null, target: null };
     this.target.type = this.target.type || 'timeserie';
 
-    if (!this.target.rawSql) {
+    if (!this.target.target.rawSql) {
       // special handling when in table panel
       if (this.panelCtrl.panel.type === 'table') {
         this.target.type = 'table';
-        this.target.rawSql = 'SELECT 1';
+        this.target.target.rawSql = 'SELECT 1';
         this.target.rawQuery = true;
       } else {
-        this.target.rawSql = this.defaultQuery;
+        this.target.target.rawSql = this.defaultQuery;
       }
     }
   }

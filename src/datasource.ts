@@ -13,7 +13,7 @@ export default class BeyondOpsSqlDatasource {
 
 
   /** @ngInject */
-  constructor(instanceSettings, private backendSrv, private templateSrv, private $q) {
+  constructor(private instanceSettings, private backendSrv, private templateSrv, private $q) {
     this.id = instanceSettings.id;
     this.type = instanceSettings.type;
     this.url = instanceSettings.url;
@@ -67,13 +67,14 @@ export default class BeyondOpsSqlDatasource {
   buildQueryParameters(options) {
     //remove placeholder targets
     options.targets = _.filter(options.targets, target => {
-      return !target.hide;
+      return !target.hide && undefined !== target.target && undefined !== target.target.rawSql;
     });
 
     var targets = _.map(options.targets, target => {
-      var newRawSql = this.templateSrv.replace(target.rawSql, options.scopedVars, 'regex');
+      target.target.rawSql = this.templateSrv.replace(target.target.rawSql, options.scopedVars, 'regex');
+      target.target.datasource = this.name;
       return {
-        target: newRawSql,
+        target: target.target,
         refId: target.refId,
         hide: target.hide,
         type: target.type || 'timeserie'
@@ -81,7 +82,6 @@ export default class BeyondOpsSqlDatasource {
     });
 
     options.targets = targets;
-
     return options;
   }
 
