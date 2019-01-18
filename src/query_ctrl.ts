@@ -7,13 +7,12 @@ import './css/query_editor.css!';
 export class BeyondOpsSqlQueryCtrl extends QueryCtrl {
   static templateUrl = 'partials/query.editor.html';
   private lastQueryError = null;
+  private showHelp = false;
   private defaultQuery = `SELECT
-  UNIX_TIMESTAMP(<time_column>) as time_sec,
-  <value column> as value,
-  <series name column> as metric
-FROM <table name>
-WHERE $__timeFilter(time_column)
-ORDER BY <time_column> ASC
+  value_column AS value,
+  ROUND(UNIX_TIMESTAMP(time_column) * 1000) AS time_sec
+FROM yourtable
+ORDER BY time_sec ASC
 `;
 
   defaults = {
@@ -24,7 +23,7 @@ ORDER BY <time_column> ASC
     super($scope, $injector);
     _.defaultsDeep(this.target, this.defaults);
 
-    this.target.target = this.target.target || { rawSql: null, datasource: null, target: null };
+    this.target.target = this.target.target || { rawSql: null, datasource: null, target: 'unknown' };
     this.target.type = this.target.type || 'timeserie';
 
     if (!this.target.target.rawSql) {
