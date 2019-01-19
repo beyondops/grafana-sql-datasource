@@ -1,0 +1,48 @@
+<div class="gf-form-group">
+    <div class="gf-form-inline">
+        <div class="gf-form gf-form--grow">
+            <code-editor content="ctrl.annotation.rawSql" on-change="ctrl.debugRefresh()" data-mode="sql">
+            </code-editor>
+        </div>
+    </div>
+
+    <div class="gf-form-inline">
+        <div class="gf-form">
+            <label class="gf-form-label query-keyword" ng-click="ctrl.showHelp = !ctrl.showHelp">
+                Show Help
+                <i class="fa fa-caret-down" ng-show="ctrl.showHelp"></i>
+                <i class="fa fa-caret-right" ng-hide="ctrl.showHelp"></i>
+            </label>
+        </div>
+    </div>
+
+    <div class="gf-form" ng-show="ctrl.showHelp">
+        <pre class="gf-form-pre alert alert-info"><h6>Annotation Query Format</h6>
+Your query should return four standard columns (case sensitive):
+<b>
+    * time: Time since UNIX Epoch in milliseconds. (required)
+    * title: The title for the annotation tooltip. (required)
+    * text: Text for the annotation. (optional)
+    * tags: Tags for the annotation. (optional)
+</b>
+MySQL:
+SELECT
+  ROUND(UNIX_TIMESTAMP(time_column) * 1000) AS time,
+  text_column AS text,
+  tag_column AS tags,
+  title_column AS title
+FROM yourtable
+ORDER BY time ASC
+
+PostgreSQL:
+SELECT
+ROUND(extract(EPOCH FROM time_column) * 1000) AS time,
+  text_column AS text,
+  tag_column AS tags,
+  title_column AS title
+FROM yourtable
+ORDER BY time ASC
+
+              </pre>
+    </div>
+</div>
