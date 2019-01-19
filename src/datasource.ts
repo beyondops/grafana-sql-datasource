@@ -26,21 +26,29 @@ export default class BeyondOpsSqlDatasource {
   }
 
   query(options) {
-    var query = this.buildQueryParameters(options);
 
-    if (query.targets.length <= 0) {
+    const queries = _.filter(options.targets, target => {
+      return !target.hide && undefined !== target.rawSql;
+    }).map(target => {
+      return {
+        refId: target.refId,
+        intervalMs: options.intervalMs,
+        maxDataPoints: options.maxDataPoints,
+        datasource: this.name,
+        rawSql: this.templateSrv.replace(target.rawSql, options.scopedVars, this.interpolateVariable),
+        type: target.type,
+        name: target.name
+      };
+    });
+
+
+    if (queries.length <= 0) {
       return this.$q.when({ data: [] });
-    }
-
-    if (this.templateSrv.getAdhocFilters) {
-      query.adhocFilters = this.templateSrv.getAdhocFilters(this.name);
-    } else {
-      query.adhocFilters = [];
     }
 
     return this.doRequest({
       url: this.url + '/query',
-      data: query,
+      data: queries,
       method: 'POST'
     });
   }
@@ -69,7 +77,18 @@ export default class BeyondOpsSqlDatasource {
   }
 
   metricFindQuery(query: string) {
-    throw new Error("Template Variable Support not implemented yet.");
+    var interpolated = {
+      rawSql: this.templateSrv.replace(query, {}, this.interpolateVariable),
+      datasource: this.name
+    };
+
+    return this.doRequest({
+      url: this.url + '/search',
+      data: interpolated,
+      method: 'POST',
+    }).then(result => {
+      return result.data;
+    });
   }
 
   testDatasource() {
@@ -83,25 +102,27 @@ export default class BeyondOpsSqlDatasource {
     });
   }
 
-  buildQueryParameters(options) {
-    //remove placeholder targets
-    options.targets = _.filter(options.targets, target => {
-      return !target.hide && undefined !== target.target && undefined !== target.target.rawSql;
-    });
+  interpolateVariable = (value, variable) => {
+    if (typeof value === 'string') {
+      if (variable.multi || variable.includeAll) {
+        return this.quoteLiteral(value);
+      } else {
+        return value;
+      }
+    }
 
-    var targets = _.map(options.targets, target => {
-      target.target.rawSql = this.templateSrv.replace(target.target.rawSql, options.scopedVars, 'regex');
-      target.target.datasource = this.name;
-      return {
-        target: target.target,
-        refId: target.refId,
-        hide: target.hide,
-        type: target.type || 'timeserie'
-      };
-    });
+    if (typeof value === 'number') {
+      return value;
+    }
 
-    options.targets = targets;
-    return options;
+    const quotedValues = _.map(value, v => {
+      return this.quoteLiteral(v);
+    });
+    return quotedValues.join(',');
+  };
+
+  quoteLiteral(value) {
+    return "'" + value.replace(/'/g, "''") + "'";
   }
 
   doRequest(options) {

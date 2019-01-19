@@ -24,17 +24,18 @@ export class BeyondOpsSqlQueryCtrl extends QueryCtrl {
     super($scope, $injector);
     _.defaultsDeep(this.target, this.defaults);
 
-    this.target.target = this.target.target || { rawSql: null, datasource: null, target: 'unknown' };
+    this.target.name = this.target.name || 'unknown';
+    this.target.rawSql = this.target.rawSql || null;
     this.target.type = this.target.type || 'timeserie';
 
-    if (!this.target.target.rawSql) {
+    if (!this.target.rawSql) {
       // special handling when in table panel
       if (this.panelCtrl.panel.type === 'table') {
         this.target.type = 'table';
-        this.target.target.rawSql = 'SELECT 1';
+        this.target.rawSql = 'SELECT 1';
         this.target.rawQuery = true;
       } else {
-        this.target.target.rawSql = defaultQuery;
+        this.target.rawSql = defaultQuery;
       }
     }
     this.panelCtrl.events.on('data-received', this.onQueryReceived.bind(this), $scope);

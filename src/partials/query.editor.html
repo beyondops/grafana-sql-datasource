@@ -2,7 +2,7 @@
 
   <div class="gf-form-inline">
     <div class="gf-form gf-form--grow">
-      <code-editor content="ctrl.target.target.rawSql" on-change="ctrl.debugRefresh()" data-mode="sql">
+      <code-editor content="ctrl.target.rawSql" on-change="ctrl.debugRefresh()" data-mode="sql">
       </code-editor>
     </div>
   </div>
@@ -13,8 +13,8 @@
       <select class="gf-form-input" ng-model="ctrl.target.type" ng-options="f as f for f in ['table', 'timeserie']"></select>
     </div>
     <div class="gf-form" ng-show="ctrl.target.type==='timeserie'">
-      <span class="gf-form-label query-keyword">Target</span>
-      <input type="text" class="gf-form-input" ng-model='ctrl.target.target.target' placeholder="target"></input>
+      <span class="gf-form-label query-keyword">Name</span>
+      <input type="text" class="gf-form-input" ng-model='ctrl.target.name' placeholder="name"></input>
     </div>
     <div class="gf-form">
       <label class="gf-form-label query-keyword pointer" ng-click="ctrl.showHelp = !ctrl.showHelp">
