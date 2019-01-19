@@ -1,7 +1,6 @@
 ///<reference path="../node_modules/grafana-sdk-mocks/app/headers/common.d.ts" />
-
 import _ from 'lodash';
-
+import moment from 'moment';
 
 export default class BeyondOpsSqlDatasource {
   id: number;
@@ -26,16 +25,19 @@ export default class BeyondOpsSqlDatasource {
   }
 
   query(options) {
-
+    let vars = this.getRangeVariables(options);
     const queries = _.filter(options.targets, target => {
       return !target.hide && undefined !== target.rawSql;
     }).map(target => {
+      let rawSql = this.templateSrv.replace(target.rawSql, options.scopedVars, this.interpolateVariable);
+      rawSql = this.templateSrv.replace(target.rawSql, vars, this.interpolateVariable);
+      target.generateSql = rawSql;
       return {
         refId: target.refId,
         intervalMs: options.intervalMs,
         maxDataPoints: options.maxDataPoints,
         datasource: this.name,
-        rawSql: this.templateSrv.replace(target.rawSql, options.scopedVars, this.interpolateVariable),
+        rawSql: rawSql,
         type: target.type,
         name: target.name
       };
@@ -104,11 +106,7 @@ export default class BeyondOpsSqlDatasource {
 
   interpolateVariable = (value, variable) => {
     if (typeof value === 'string') {
-      if (variable.multi || variable.includeAll) {
-        return this.quoteLiteral(value);
-      } else {
-        return value;
-      }
+      return this.quoteLiteral(value);
     }
 
     if (typeof value === 'number') {
@@ -120,6 +118,30 @@ export default class BeyondOpsSqlDatasource {
     });
     return quotedValues.join(',');
   };
+
+  getRangeVariables(options) {
+
+    let defaultVariables = {
+      from_unix_timestamp: {
+        text: options.range.from.valueOf(),
+        value: options.range.from.valueOf()
+      },
+      from: {
+        text: moment(options.range.from).format('YYYY-MM-DD HH:mm:ss'),
+        value: moment(options.range.from).format('YYYY-MM-DD HH:mm:ss')
+      },
+      to_unix_timestamp: {
+        text: options.range.to.valueOf(),
+        value: options.range.to.valueOf()
+      },
+      to: {
+        text: moment(options.range.to).format('YYYY-MM-DD HH:mm:ss'),
+        value: moment(options.range.to).format('YYYY-MM-DD HH:mm:ss')
+      },
+    };
+    console.log(defaultVariables);
+    return defaultVariables;
+  }
 
   quoteLiteral(value) {
     return "'" + value.replace(/'/g, "''") + "'";

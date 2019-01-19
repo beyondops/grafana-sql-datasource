@@ -14,7 +14,9 @@ ORDER BY time_sec ASC
 export class BeyondOpsSqlQueryCtrl extends QueryCtrl {
   static templateUrl = 'partials/query.editor.html';
   private lastQueryError = null;
+  private generateSql = null;
   private showHelp = false;
+  private showLastQuerySQL = false;
 
   defaults = {
   };
@@ -44,6 +46,7 @@ export class BeyondOpsSqlQueryCtrl extends QueryCtrl {
 
   onQueryReceived() {
     this.lastQueryError = null;
+    this.generateSql = null;
   }
 
   onQueryError(err) {
