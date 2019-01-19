@@ -4,16 +4,17 @@ import _ from 'lodash';
 import { QueryCtrl } from 'app/plugins/sdk';
 import './css/query_editor.css!';
 
-export class BeyondOpsSqlQueryCtrl extends QueryCtrl {
-  static templateUrl = 'partials/query.editor.html';
-  private lastQueryError = null;
-  private showHelp = false;
-  private defaultQuery = `SELECT
+const defaultQuery = `SELECT
   value_column AS value,
   ROUND(UNIX_TIMESTAMP(time_column) * 1000) AS time_sec
 FROM yourtable
 ORDER BY time_sec ASC
 `;
+
+export class BeyondOpsSqlQueryCtrl extends QueryCtrl {
+  static templateUrl = 'partials/query.editor.html';
+  private lastQueryError = null;
+  private showHelp = false;
 
   defaults = {
   };
@@ -33,7 +34,7 @@ ORDER BY time_sec ASC
         this.target.target.rawSql = 'SELECT 1';
         this.target.rawQuery = true;
       } else {
-        this.target.target.rawSql = this.defaultQuery;
+        this.target.target.rawSql = defaultQuery;
       }
     }
     this.panelCtrl.events.on('data-received', this.onQueryReceived.bind(this), $scope);
