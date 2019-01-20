@@ -6,7 +6,8 @@ import './css/query_editor.css!';
 
 const defaultQuery = `SELECT
   value_column AS value,
-  ROUND(UNIX_TIMESTAMP(time_column) * 1000) AS time_sec
+  UNIX_TIMESTAMP(time_column) AS time_sec,
+  metric_column AS metric
 FROM yourtable
 ORDER BY time_sec ASC
 `;
@@ -26,7 +27,6 @@ export class BeyondOpsSqlQueryCtrl extends QueryCtrl {
     super($scope, $injector);
     _.defaultsDeep(this.target, this.defaults);
 
-    this.target.name = this.target.name || 'unknown';
     this.target.rawSql = this.target.rawSql || null;
     this.target.type = this.target.type || 'timeserie';
 

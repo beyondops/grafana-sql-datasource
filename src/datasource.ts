@@ -38,8 +38,7 @@ export default class BeyondOpsSqlDatasource {
         maxDataPoints: options.maxDataPoints,
         datasource: this.name,
         rawSql: rawSql,
-        type: target.type,
-        name: target.name
+        type: target.type
       };
     });
 
@@ -122,7 +121,7 @@ export default class BeyondOpsSqlDatasource {
   getRangeVariables(options) {
 
     let defaultVariables = {
-      from_unix_timestamp: {
+      from_unix_timestamp_ms: {
         text: options.range.from.valueOf(),
         value: options.range.from.valueOf()
       },
@@ -130,13 +129,21 @@ export default class BeyondOpsSqlDatasource {
         text: moment(options.range.from).format('YYYY-MM-DD HH:mm:ss'),
         value: moment(options.range.from).format('YYYY-MM-DD HH:mm:ss')
       },
-      to_unix_timestamp: {
+      from_day: {
+        text: moment(options.range.from).format('YYYY-MM-DD'),
+        value: moment(options.range.from).format('YYYY-MM-DD')
+      },
+      to_unix_timestamp_ms: {
         text: options.range.to.valueOf(),
         value: options.range.to.valueOf()
       },
       to: {
         text: moment(options.range.to).format('YYYY-MM-DD HH:mm:ss'),
         value: moment(options.range.to).format('YYYY-MM-DD HH:mm:ss')
+      },
+      to_day: {
+        text: moment(options.range.to).format('YYYY-MM-DD'),
+        value: moment(options.range.to).format('YYYY-MM-DD')
       },
     };
     console.log(defaultVariables);

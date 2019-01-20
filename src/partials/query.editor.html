@@ -12,10 +12,6 @@
       <label class="gf-form-label query-keyword">Format as</label>
       <select class="gf-form-input" ng-model="ctrl.target.type" ng-options="f as f for f in ['table', 'timeserie']"></select>
     </div>
-    <div class="gf-form" ng-show="ctrl.target.type==='timeserie'">
-      <span class="gf-form-label query-keyword">Name</span>
-      <input type="text" class="gf-form-input" ng-model='ctrl.target.name' placeholder="name"></input>
-    </div>
     <div class="gf-form">
       <label class="gf-form-label query-keyword pointer" ng-click="ctrl.showHelp = !ctrl.showHelp">
         Show Help
@@ -41,14 +37,16 @@
 MySQL:
 SELECT
   value_column AS value,
-  ROUND(UNIX_TIMESTAMP(time_column) * 1000) AS time_sec
+  UNIX_TIMESTAMP(time_column) AS time_sec,
+  metric_column AS metric
 FROM yourtable
 ORDER BY time_sec ASC
 
 PostgreSQL:
 SELECT
   value_column AS value,
-  round(extract(EPOCH FROM time_column) * 1000) AS time_sec
+  extract(EPOCH FROM time_column) AS time_sec,
+  metric_column AS metric
 FROM yourtable
 ORDER BY time_sec ASC 
 
