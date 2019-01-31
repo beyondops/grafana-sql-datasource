@@ -1,7 +1,7 @@
 
 # BeyondOps SQL Datasource For Grafana
 
-This datasource plugin support SQL database, we have tested on these databases:
+This datasource plugin support SQL database, it depends on [grafana-sql-datasource-server](https://github.com/beyondops/grafana-sql-datasource-server), we have tested on these databases:
 
 - MySQL
 - PostgreSQL
