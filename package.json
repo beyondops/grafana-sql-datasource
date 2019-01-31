@@ -1,6 +1,6 @@
 {
   "name": "grafana-typescript-template-datasource",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "TypeScript Template Data Source for Grafana. A starter template for creating data sources written in TypeScript for Grafana.",
   "scripts": {
     "build": "grunt",
