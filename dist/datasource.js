@@ -117,25 +117,49 @@ System.register(['lodash', 'moment'], function(exports_1) {
                             text: options.range.from.valueOf(),
                             value: options.range.from.valueOf()
                         },
+                        from_unix_timestamp: {
+                            text: Math.round(options.range.from.valueOf() / 1000),
+                            value: Math.round(options.range.from.valueOf() / 1000)
+                        },
                         from: {
                             text: moment_1.default(options.range.from).format('YYYY-MM-DD HH:mm:ss'),
                             value: moment_1.default(options.range.from).format('YYYY-MM-DD HH:mm:ss')
+                        },
+                        from_number: {
+                            text: moment_1.default(options.range.from).format('YYYYMMDDHHmmss'),
+                            value: moment_1.default(options.range.from).format('YYYYMMDDHHmmss')
                         },
                         from_day: {
                             text: moment_1.default(options.range.from).format('YYYY-MM-DD'),
                             value: moment_1.default(options.range.from).format('YYYY-MM-DD')
                         },
+                        from_day_number: {
+                            text: moment_1.default(options.range.from).format('YYYYMMDD'),
+                            value: moment_1.default(options.range.from).format('YYYYMMDD')
+                        },
                         to_unix_timestamp_ms: {
                             text: options.range.to.valueOf(),
                             value: options.range.to.valueOf()
+                        },
+                        to_unix_timestamp: {
+                            text: Math.round(options.range.to.valueOf() / 1000),
+                            value: Math.round(options.range.to.valueOf() / 1000)
                         },
                         to: {
                             text: moment_1.default(options.range.to).format('YYYY-MM-DD HH:mm:ss'),
                             value: moment_1.default(options.range.to).format('YYYY-MM-DD HH:mm:ss')
                         },
+                        to_number: {
+                            text: moment_1.default(options.range.to).format('YYYYMMDDHHmmss'),
+                            value: moment_1.default(options.range.to).format('YYYYMMDDHHmmss')
+                        },
                         to_day: {
                             text: moment_1.default(options.range.to).format('YYYY-MM-DD'),
                             value: moment_1.default(options.range.to).format('YYYY-MM-DD')
+                        },
+                        to_day_number: {
+                            text: moment_1.default(options.range.to).format('YYYYMMDD'),
+                            value: moment_1.default(options.range.to).format('YYYYMMDD')
                         },
                     };
                     console.log(defaultVariables);

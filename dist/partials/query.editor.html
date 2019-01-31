@@ -13,7 +13,7 @@
       <select class="gf-form-input" ng-model="ctrl.target.type" ng-options="f as f for f in ['table', 'timeserie']"></select>
     </div>
     <div class="gf-form">
-      <label class="gf-form-label query-keyword pointer" ng-click="ctrl.showHelp = !ctrl.showHelp">
+      <label class="gf-form-label query-keyword pointer" ng-click="ctrl.showHelpPanel()">
         Show Help
         <i class="fa fa-caret-down" ng-show="ctrl.showHelp"></i>
         <i class="fa fa-caret-right" ng-hide="ctrl.showHelp"></i>
@@ -34,6 +34,24 @@
 
   <div class="gf-form" ng-show="ctrl.showHelp">
     <pre class="gf-form-pre alert alert-info">
+
+<h3>Variables:</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="(key, value) in ctrl.queryRangeVariables">
+      <td>{{key}} </td>
+      <td>{{value.value}}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>SQL Example:</h3>
 MySQL:
 SELECT
   value_column AS value,

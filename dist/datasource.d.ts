@@ -22,7 +22,15 @@ export default class BeyondOpsSqlDatasource {
             text: any;
             value: any;
         };
+        from_unix_timestamp: {
+            text: number;
+            value: number;
+        };
         from: {
+            text: any;
+            value: any;
+        };
+        from_number: {
             text: any;
             value: any;
         };
@@ -30,15 +38,31 @@ export default class BeyondOpsSqlDatasource {
             text: any;
             value: any;
         };
+        from_day_number: {
+            text: any;
+            value: any;
+        };
         to_unix_timestamp_ms: {
             text: any;
             value: any;
+        };
+        to_unix_timestamp: {
+            text: number;
+            value: number;
         };
         to: {
             text: any;
             value: any;
         };
+        to_number: {
+            text: any;
+            value: any;
+        };
         to_day: {
+            text: any;
+            value: any;
+        };
+        to_day_number: {
             text: any;
             value: any;
         };

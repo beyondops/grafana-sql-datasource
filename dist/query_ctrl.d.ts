@@ -7,11 +7,13 @@ export declare class BeyondOpsSqlQueryCtrl extends QueryCtrl {
     private generateSql;
     private showHelp;
     private showLastQuerySQL;
+    private queryRangeVariables;
     defaults: {};
     /** @ngInject **/
     constructor($scope: any, $injector: any, templateSrv: any);
     onQueryReceived(): void;
     onQueryError(err: any): void;
     toggleEditorMode(): void;
+    showHelpPanel(): void;
     debugRefresh(): void;
 }

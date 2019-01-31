@@ -28,6 +28,7 @@ System.register(['lodash', 'app/plugins/sdk', './css/query_editor.css!'], functi
                     this.generateSql = null;
                     this.showHelp = false;
                     this.showLastQuerySQL = false;
+                    this.queryRangeVariables = {};
                     this.defaults = {};
                     lodash_1.default.defaultsDeep(this.target, this.defaults);
                     this.target.rawSql = this.target.rawSql || null;
@@ -58,6 +59,10 @@ System.register(['lodash', 'app/plugins/sdk', './css/query_editor.css!'], functi
                 };
                 BeyondOpsSqlQueryCtrl.prototype.toggleEditorMode = function () {
                     this.target.rawQuery = !this.target.rawQuery;
+                };
+                BeyondOpsSqlQueryCtrl.prototype.showHelpPanel = function () {
+                    this.showHelp = !this.showHelp;
+                    this.queryRangeVariables = this.datasource.getRangeVariables(this.panelCtrl);
                 };
                 BeyondOpsSqlQueryCtrl.prototype.debugRefresh = function () {
                     console.log(this.target);

@@ -18,6 +18,7 @@ export class BeyondOpsSqlQueryCtrl extends QueryCtrl {
   private generateSql = null;
   private showHelp = false;
   private showLastQuerySQL = false;
+  private queryRangeVariables = {};
 
   defaults = {
   };
@@ -58,6 +59,11 @@ export class BeyondOpsSqlQueryCtrl extends QueryCtrl {
 
   toggleEditorMode() {
     this.target.rawQuery = !this.target.rawQuery;
+  }
+
+  showHelpPanel() {
+    this.showHelp = !this.showHelp;
+    this.queryRangeVariables = this.datasource.getRangeVariables(this.panelCtrl);
   }
 
   debugRefresh() {
